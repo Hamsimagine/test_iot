@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 import sqlite3
 from datetime import datetime
+from pyngrok import ngrok  # <== tambahkan ini
 
 app = Flask(__name__)
 
@@ -67,4 +68,9 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=81)
+    # Jalankan Flask di port 5000 (lebih umum untuk ngrok)
+    port = 5000
+    public_url = ngrok.connect(port)  # buka tunnel ke Flask
+    print("Ngrok URL:", public_url)
+    print("Akses API publik di:", f"{public_url}/api/post_data")
+    app.run(host="0.0.0.0", port=port)
